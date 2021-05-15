@@ -30,7 +30,7 @@ bool post_widget::updateInfo()
 
     //根据绑定的文章显示信息
     label_author->setText(ap->author_name.mid(0,5));
-    label_text->setText(ap->text.mid(0,50));
+    label_text->setText(ap->title.mid(0,50));
 
     //日期规范化显示：
     QString t_year(4);
