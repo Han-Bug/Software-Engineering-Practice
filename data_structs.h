@@ -50,31 +50,4 @@ struct associated_tag_to_post
         tag=_tag;
     }
 };
-/*
-//用于数据库交互的字符串处理模块
-class DatabaseStringManipulation{
-public:
-    DatabaseStringManipulation(){}
-    template<class T,class ...targs>
-    void addData(T data,targs ...args){
-        addData(data);
-        addData(args...);
-    }
-    QString outData(){
-        str.replace(str.size()-1,1,"");
-        return str;
-    }
-
-private:
-    QString str="";
-    void addData(int data){
-        str.append(QString::number(data));
-        str.append(",");
-    }
-    void addData(QString data){
-        str.append(data);
-    }
-
-};
-*/
 #endif // DATA_STRUCTS_H

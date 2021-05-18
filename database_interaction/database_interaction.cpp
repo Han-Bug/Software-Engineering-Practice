@@ -39,6 +39,41 @@ bool database_interaction::accountVerification(personal_information* &pi,QString
     return false;
 }
 
+bool database_interaction::getPostInfo(list<article_post *> &l, int type, QString start_time, QString end_time, int num)
+{
+    //start_time>=end_time
+    if(start_time.toLongLong()<end_time.toLongLong()){
+        return getPostInfo(l,type,end_time,start_time,num);
+    }
+    QSqlQuery query(db);
+    QString sqlSentence;
+    if(type<0){
+        sqlSentence =QString ("select * from article_post  where time<='%1' and time>='%2' ").arg(start_time,end_time);
+    }
+    else{
+        sqlSentence =QString ("select * from article_post  where type=%1 and time<='%2' and time>='%3' ").arg(QString::number(type),start_time,end_time);
+
+    }
+    query.exec(sqlSentence);
+    int postNum=0;
+    while(query.next())
+       {
+        if(postNum>=num&&num>=0)break;
+        article_post* ap=new article_post(
+                    query.value(0).toString() ,
+                    query.value(1).toString() ,
+                    query.value(2).toInt(),
+                    query.value(3).toString(),
+                    query.value(4).toInt(),
+                    query.value(5).toString()
+                    );
+        l.push_back(ap);
+        postNum++;
+      }
+   if(postNum==0)return false;
+   return true;
+}
+
 bool database_interaction::selectData(list<vector<QString>*> &l, int typeNum,QString sourse, QString limitStatement)
 {
     QSqlQuery query(db);
@@ -132,12 +167,10 @@ QString database_interaction::getDate()
     QSqlQuery query(db);
     query.exec("Select CONVERT(varchar(100), GETDATE(), 112)");
     while(query.next()){date=query.value(0).toString();}
-    //qDebug()<<"date= "<<date;
     query.clear();
     query.exec("Select CONVERT(varchar(100), GETDATE(), 24)");
     while(query.next()){time=query.value(0).toString();}
     time.replace(":","");
-    //qDebug()<<"time= "<<time;
     date.append(time);
     return date;
 }

@@ -26,6 +26,7 @@ private:
     Ui::register_interface *ui;
 
     database_interaction *db;
+    validity_test vt;
 };
 
 #endif // REGISTER_INTERFACE_H

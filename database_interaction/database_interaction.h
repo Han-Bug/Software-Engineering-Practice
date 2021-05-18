@@ -26,15 +26,7 @@ public:
     //验证帐号数据，若存在则返回true并将数据写入pi，不存在则返回false
     bool accountVerification(personal_information* &pi,QString account,QString password);
     //获取指定类型、时间区间的文章数据  num:需获取的文章数量，-1表示无数量限制
-    //bool getPostInfo(list<article_post*> &l,int type,int start_time,int end_time,int num=-1);
-    //写入新帐号数据
-    //bool registerNewAccount(const personal_information &pi);
-    //写入新文章数据
-    //bool registerNewPost(const article_post &ap);
-    //写入新的关联：用户-文章   type:关联类型
-    //bool registerNewLink_PersonToPost(QString personalAccount,QString postId,int type);
-    //判断某属性是否存在  例如：tableName=personal_information;columnName=name;value="123456" 即判断是否存在name值为“123456”的account
-    //bool existenceTest(QString tableName,QString columnName,QString value);
+    bool getPostInfo(list<article_post*> &l, int type, QString start_time, QString end_time, int num=-1);
 
     //获取数据
     bool selectData(list<vector<QString>*> &l, int typeNum,QString sourse, QString limitStatement="");
@@ -51,9 +43,7 @@ public:
     bool updateData_PersonalInformation_Password(QString _account,QString _password);
     //获取当前数据库时间
     QString getDate();
-    //获取某数据的已有数量
     int getNumberOf(QString source);
-
     ~database_interaction(){db.close();}
 private:
     QString host;

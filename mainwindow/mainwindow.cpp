@@ -4,9 +4,10 @@ MainWindow::MainWindow(database_interaction *_db,QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    this->db=_db;
+    se=new Search(db);
     ui->setupUi(this);
     //初始化子窗口
-    this->db=_db;
     pi=new personal_interface(db);
     layout_post=new QVBoxLayout(ui->scrollAreaWidgetContents);
     layout_post->setSpacing(10);
@@ -85,4 +86,16 @@ void MainWindow::on_pushButton_publish_clicked()
 void MainWindow::on_pushButton_dailyShare_clicked()
 {
     updatePost();
+}
+
+
+void MainWindow::on_pushButton_doSearch_clicked()
+{
+    list<article_post*> result;
+    se->search(ui->lineEdit_search->text(),result);
+    qDebug()<<ui->lineEdit_search->text();
+    associated_interface* ai=new associated_interface(result);
+    ai->setAttribute(Qt::WA_DeleteOnClose);
+    ai->show();
+
 }

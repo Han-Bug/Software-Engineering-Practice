@@ -4,11 +4,10 @@ validity_test::validity_test()
 {
 
 }
-bool validity_test::IsDigit(QString& str)
+bool validity_test::IsDigit(QString& str,int num)
 {
-    return false;
     bool flag = true;
-    if (str.length() != 10)
+    if (str.length() > num)return false;
     for (unsigned int i = 0; i < str.length(); i++)//  返回字符串的长度
     {//for循环访问字符串中的每个字符
         if (!str[i].isDigit())
@@ -22,18 +21,18 @@ bool validity_test::IsDigit(QString& str)
 
 
 //密码的检测函数
-bool validity_test::IsDigitAndWord(QString& str)
+bool validity_test::IsDigitAndWord(QString& str,int num)
 {
     int a=0;
     int b=0;
     bool flag = false;
-    if (str.length() != 10)
+    if (str.length() > num)
         return false;
     for (int i = 0; i < str.length(); i++)
     {
         if (str[i] >= '0' && str[i] <= '9')//包含数字
             a = 1;
-        if (str[i] >= 'A' && str[i] <= 'Z' || str[i] >= 'a' && str[i] <= 'z')//包含字母
+        if ((str[i] >= 'A' && str[i] <= 'Z') || (str[i] >= 'a' && str[i] <= 'z'))//包含字母
             b = 1;
     }
     if (a + b == 2)
@@ -42,9 +41,9 @@ bool validity_test::IsDigitAndWord(QString& str)
 }
 
 //昵称的检测函数
-bool validity_test::IsTrue(QString& str)
+bool validity_test::wordLimit(QString& str,int num)
 {
-    if (str.length() != 10)
+    if (str.length() > num)
         return false;
     else return true;
 }

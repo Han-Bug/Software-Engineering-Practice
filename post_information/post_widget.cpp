@@ -75,6 +75,7 @@ void post_widget::mousePressEvent(QMouseEvent *e){
 void post_widget::mouseReleaseEvent(QMouseEvent *e){
     if(ap==NULL)return ;
     if(e->button())this->setStyleSheet("background-color:rgb(240,248,255)");
+    pdi->setAttribute(Qt::WA_DeleteOnClose);
     pdi->show();
 
 }

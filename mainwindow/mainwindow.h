@@ -14,7 +14,8 @@
 #include "personal_info_widget/personal_interface.h"
 #include "post_information/post_widget.h"
 #include "publish_article_interface.h"
-
+#include "associated_interface.h"
+#include "Search.h"
 class login_interface;
 
 namespace Ui {
@@ -41,6 +42,9 @@ private slots:
 
     void on_pushButton_dailyShare_clicked();
 
+
+    void on_pushButton_doSearch_clicked();
+
 private:
     Ui::MainWindow *ui;
     //滚动界面布局
@@ -57,6 +61,7 @@ private:
     //个人信息
     personal_information *personalInfo=NULL;
 
+    Search *se;
 
 
     //测试用
