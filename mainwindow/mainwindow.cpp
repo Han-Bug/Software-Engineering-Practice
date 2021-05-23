@@ -6,6 +6,8 @@ MainWindow::MainWindow(database_interaction *_db,QWidget *parent) :
 {
     this->db=_db;
     se=new Search(db);
+    types=new bool[4];
+    for(int i=0;i<4;i++)types[i]=true;
     ui->setupUi(this);
     //初始化子窗口
     pi=new personal_interface(db);
@@ -23,28 +25,30 @@ void MainWindow::setPersonalInfo(personal_information *pi)
     else ui->user->setText(personalInfo->name);
 }
 
-void MainWindow::updatePost(int type)
+void MainWindow::updatePost()
 {
     for(int i=0;i<pw_v.size();i++){
-        pw_v[i]->setParent(NULL);
+        pw_v[i]->close();
         layout()->removeWidget(pw_v[i]);
     }
 
     //清除已有文章数据
     pw_v.clear();
-    list<vector<QString>*> l;
+    list<article_post*> l;
     //根据文章类型获取指定文章，-1即获取所有文章
-    if(type==-1)
-        db->selectData(l,6,"article_post");
-    else
-        db->selectData(l,6,"article_post",QString("where type = %1").arg(QString::number(type)));
+    for(int i=0;i<4;i++){
+        if(types[i])db->getPostInfo(l,i,"000000000000","900000000000",-1);
+    }
+    l.sort(compareArticalPostByTime);
     while(l.size()!=0){
-        vector<QString> &v=*l.front();
-        article_post* ap=new article_post(v[0],v[1],v[2].toInt(),v[3],v[4].toInt(),v[5]);
-        pw_v.push_back(new post_widget(ap));
+        article_post* ap=l.front();
+        post_widget* pw=new post_widget(ap);
+        pw->setAttribute(Qt::WA_DeleteOnClose);
+        pw_v.push_back(pw);
         l.pop_front();
     }
-    qDebug()<<pw_v.size();
+
+    //qDebug()<<pw_v.size();
     for(int i=0;i<pw_v.size();i++){
         layout_post->addWidget(pw_v[i]);
     }
@@ -83,19 +87,45 @@ void MainWindow::on_pushButton_publish_clicked()
     }
 }
 
-void MainWindow::on_pushButton_dailyShare_clicked()
-{
-    updatePost();
-}
-
 
 void MainWindow::on_pushButton_doSearch_clicked()
 {
     list<article_post*> result;
     se->search(ui->lineEdit_search->text(),result);
-    qDebug()<<ui->lineEdit_search->text();
+    //qDebug()<<ui->lineEdit_search->text();
     associated_interface* ai=new associated_interface(result);
     ai->setAttribute(Qt::WA_DeleteOnClose);
     ai->show();
+
+}
+
+void MainWindow::on_pushButton_dailyShare_clicked(bool checked)
+{
+    if(checked)types[0]=true;
+    else types[0]=false;
+    updatePost();
+
+}
+
+void MainWindow::on_pushButton_forOrders_clicked(bool checked)
+{
+    if(checked)types[1]=true;
+    else types[1]=false;
+    updatePost();
+}
+
+void MainWindow::on_pushButton_lostAndFound_clicked(bool checked)
+{
+    if(checked)types[2]=true;
+    else types[2]=false;
+    updatePost();
+
+}
+
+void MainWindow::on_pushButton_expExchange_clicked(bool checked)
+{
+    if(checked)types[3]=true;
+    else types[3]=false;
+    updatePost();
 
 }

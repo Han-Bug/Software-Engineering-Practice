@@ -50,4 +50,9 @@ struct associated_tag_to_post
         tag=_tag;
     }
 };
+//降序
+static bool compareArticalPostByTime(article_post* a,article_post* b){
+    return a->time.toLongLong()>b->time.toLongLong();
+}
+
 #endif // DATA_STRUCTS_H

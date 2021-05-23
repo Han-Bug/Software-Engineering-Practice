@@ -22,28 +22,16 @@ void register_interface::cleanDataOfLine()
 
 int register_interface::legalityReview(QString _account, QString _password, QString _passwordConfirm, QString name)
 {
+    if(!vt.IsDigit(_account,10))return 2;
+    if(!vt.wordLimit(name,10))return 4;
+    if(!vt.IsDigitAndWord(_password,10))return 3;
+    if(_password!=_passwordConfirm)return 1;
     /// 0:合法
     /// 1:密码与确认密码不同
     /// 2:帐号非法
     /// 3:密码非法
     /// 4:名称非法
     ///
-
-    if(!vt.IsDigit(_account,10)){
-        return 2;
-    }
-    else if(!vt.IsDigitAndWord(_password,10)){
-        return 3;
-    }
-    else if(!vt.wordLimit(name,10)){
-        return 4;
-    }
-    else if(_passwordConfirm!=_password){
-        return 1;
-    }
-    else return 0;
-
-
     return 0;
 }
 
@@ -68,12 +56,11 @@ void register_interface::on_pushButton_sure_to_register_clicked()
     ///
     ///
     //此处跳过合法性验证
-    lr=0;
     //
     if(lr==0){
         if(db->insertData_PersonalInformation(ui->lineEdit_account->text(),ui->lineEdit_password->text(),ui->lineEdit_name->text()))
             ui->label_prompt_message->setText("注册成功!");
-        else{ui->label_prompt_message->setText("注册失败!");}
+        else{ui->label_prompt_message->setText("已存在该帐号");}
     }
     else if(lr==1){
         ui->label_prompt_message->setText("密码与确认密码不同!");

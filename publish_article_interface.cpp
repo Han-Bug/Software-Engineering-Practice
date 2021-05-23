@@ -26,7 +26,7 @@ void publish_article_interface::setAuthor(QString _authorAccount,QString _author
 void publish_article_interface::on_pushButton_publish_clicked()
 {
     //合法性检验
-
+    //(无限制)
     //
 
     if(!db->insertData_ArticlePost(ui->lineEdit->text(),

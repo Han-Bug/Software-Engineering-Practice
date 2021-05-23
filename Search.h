@@ -19,7 +19,7 @@ public:
     }
     inline void search(QString str1, list<article_post*>&result){
         l.clear();
-        db->getPostInfo(l,0,"202200000000","000000000000",-1);
+        db->getPostInfo(l,-1,"202200000000","000000000000",-1);
         Tit.clear();
         result.clear();
         string str;

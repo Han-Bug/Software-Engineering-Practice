@@ -23,21 +23,25 @@ bool validity_test::IsDigit(QString& str,int num)
 //密码的检测函数
 bool validity_test::IsDigitAndWord(QString& str,int num)
 {
-    int a=0;
-    int b=0;
-    bool flag = false;
+
     if (str.length() > num)
         return false;
+
     for (int i = 0; i < str.length(); i++)
     {
-        if (str[i] >= '0' && str[i] <= '9')//包含数字
-            a = 1;
-        if ((str[i] >= 'A' && str[i] <= 'Z') || (str[i] >= 'a' && str[i] <= 'z'))//包含字母
-            b = 1;
+        if(!str[i].isLetterOrNumber())return false;
+        QChar cha = str[i];
+            ushort uni = cha.unicode();
+            //若含有中文，返回false
+            if(uni >= 0x4E00 && uni <= 0x9FA5)
+            {
+                return false;
+            }
+
+
     }
-    if (a + b == 2)
-        flag = true;//必须同时包含数字和英文字母
-    return flag;
+    return true;
+
 }
 
 //昵称的检测函数

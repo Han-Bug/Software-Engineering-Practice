@@ -16,6 +16,9 @@
 #include "publish_article_interface.h"
 #include "associated_interface.h"
 #include "Search.h"
+
+//using namespace  std;
+
 class login_interface;
 
 namespace Ui {
@@ -31,7 +34,7 @@ public:
     //设置个人信息
     void setPersonalInfo(personal_information* pi);
     //更新广场
-    void updatePost(int type=-1);
+    void updatePost();
 
     ~MainWindow();
 
@@ -40,10 +43,15 @@ private slots:
 
     void on_pushButton_publish_clicked();
 
-    void on_pushButton_dailyShare_clicked();
-
-
     void on_pushButton_doSearch_clicked();
+
+    void on_pushButton_dailyShare_clicked(bool checked);
+
+    void on_pushButton_forOrders_clicked(bool checked);
+
+    void on_pushButton_lostAndFound_clicked(bool checked);
+
+    void on_pushButton_expExchange_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui;
@@ -62,6 +70,8 @@ private:
     personal_information *personalInfo=NULL;
 
     Search *se;
+
+    bool* types;
 
 
     //测试用

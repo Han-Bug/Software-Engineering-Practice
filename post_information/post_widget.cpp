@@ -33,9 +33,9 @@ bool post_widget::updateInfo()
     label_text->setText(ap->title.mid(0,50));
 
     //日期规范化显示：
-    QString t_year(4);
-    QString t_month(2);
-    QString t_day(2);
+    QString t_year="    ";
+    QString t_month="  ";
+    QString t_day="  ";
 
     //获取年月日
     for(int y=0;y<4;y++){
