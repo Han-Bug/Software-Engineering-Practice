@@ -63,13 +63,6 @@
       </layout>
      </widget>
     </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_modify">
-      <property name="text">
-       <string>修改个人信息</string>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
  </widget>

@@ -106,6 +106,19 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_secondaryMarket">
+            <property name="text">
+             <string>二手市场</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>

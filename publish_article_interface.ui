@@ -94,6 +94,11 @@
          <string>经验分享</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>二手市场</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>

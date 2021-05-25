@@ -6,8 +6,8 @@ MainWindow::MainWindow(database_interaction *_db,QWidget *parent) :
 {
     this->db=_db;
     se=new Search(db);
-    types=new bool[4];
-    for(int i=0;i<4;i++)types[i]=true;
+    types=new bool[5];
+    for(int i=0;i<5;i++)types[i]=true;
     ui->setupUi(this);
     //初始化子窗口
     pi=new personal_interface(db);
@@ -36,7 +36,7 @@ void MainWindow::updatePost()
     pw_v.clear();
     list<article_post*> l;
     //根据文章类型获取指定文章，-1即获取所有文章
-    for(int i=0;i<4;i++){
+    for(int i=0;i<5;i++){
         if(types[i])db->getPostInfo(l,i,"000000000000","900000000000",-1);
     }
     l.sort(compareArticalPostByTime);
@@ -128,4 +128,12 @@ void MainWindow::on_pushButton_expExchange_clicked(bool checked)
     else types[3]=false;
     updatePost();
 
+}
+
+
+void MainWindow::on_pushButton_secondaryMarket_clicked(bool checked)
+{
+    if(checked)types[4]=true;
+    else types[4]=false;
+    updatePost();
 }
