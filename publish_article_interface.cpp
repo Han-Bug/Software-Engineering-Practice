@@ -25,7 +25,20 @@ void publish_article_interface::setAuthor(QString _authorAccount,QString _author
 
 void publish_article_interface::on_pushButton_publish_clicked()
 {
+    QString title=ui->lineEdit->text();
+    QString text=ui->textEdit->toPlainText();
     //合法性检验
+    if(!vt.wordLimit(title,20)){
+        QMessageBox errorMessageBox;
+        errorMessageBox.setText("标题不能为空且不能超过20个字");
+        errorMessageBox.exec();
+        return;}
+    else if(!vt.wordLimit(text,-1)){
+        QMessageBox errorMessageBox;
+        errorMessageBox.setText("正文不能为空");
+        errorMessageBox.exec();
+        return;}
+
     //(无限制)
     //
 

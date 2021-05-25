@@ -3,7 +3,7 @@
 #include <QString>
 #include <list>
 #include <vector>
-
+#include "validity_test.h"
 struct personal_information
 {
     QString account;

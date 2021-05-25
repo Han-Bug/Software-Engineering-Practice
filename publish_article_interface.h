@@ -23,6 +23,7 @@ private slots:
 private:
     Ui::publish_article_interface *ui;
     database_interaction *db;
+    validity_test vt;
     QString authorName;
     QString authorAccount;
 };

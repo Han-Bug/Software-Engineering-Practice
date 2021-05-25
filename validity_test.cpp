@@ -4,10 +4,11 @@ validity_test::validity_test()
 {
 
 }
-bool validity_test::IsDigit(QString& str,int num)
+bool validity_test::IsDigit(QString& str,int maxNum,int minNum)
 {
     bool flag = true;
-    if (str.length() > num)return false;
+    if (str.length() > maxNum && maxNum>0)return false;
+    else if(str.length()<minNum)return false;
     for (unsigned int i = 0; i < str.length(); i++)//  返回字符串的长度
     {//for循环访问字符串中的每个字符
         if (!str[i].isDigit())
@@ -21,12 +22,11 @@ bool validity_test::IsDigit(QString& str,int num)
 
 
 //密码的检测函数
-bool validity_test::IsDigitAndWord(QString& str,int num)
+bool validity_test::IsDigitAndWord(QString& str,int maxNum,int minNum)
 {
 
-    if (str.length() > num)
-        return false;
-
+    if (str.length() > maxNum && maxNum>0)return false;
+    else if(str.length()<minNum)return false;
     for (int i = 0; i < str.length(); i++)
     {
         if(!str[i].isLetterOrNumber())return false;
@@ -45,9 +45,9 @@ bool validity_test::IsDigitAndWord(QString& str,int num)
 }
 
 //昵称的检测函数
-bool validity_test::wordLimit(QString& str,int num)
+bool validity_test::wordLimit(QString& str,int maxNum,int minNum)
 {
-    if (str.length() > num)
-        return false;
+    if (str.length() > maxNum && maxNum>0)return false;
+    else if(str.length()<minNum)return false;
     else return true;
 }
