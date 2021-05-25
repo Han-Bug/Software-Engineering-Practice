@@ -55,8 +55,6 @@ private slots:
 
     void on_pushButton_expExchange_clicked(bool checked);
 
-    void on_scrollArea_customContextMenuRequested(const QPoint &pos);
-
 private:
     Ui::MainWindow *ui;
     //滚动界面布局

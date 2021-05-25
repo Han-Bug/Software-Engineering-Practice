@@ -35,6 +35,7 @@ public:
     bool selectData(list<vector<QString>*> &l, int typeNum,QString sourse, QString limitStatement="");
     bool Fabulous_UserToPost(int _postId,QString _account);
     bool Collect_UserToPost(int _postId,QString _account);
+    bool selectCount(int &a, int &b, int _postId);
     //删除数据
     bool deleteData(QString sourse, QString limitStatement="");
     bool deleteData_Collect_UserToPost(int _postId,QString _account);
@@ -49,7 +50,7 @@ public:
     bool insertData_Collect_UserToPost(int _postId,QString _account);
     bool insertData_Fabulous_UserToPost(int _postId,QString _account);
     // //////////
-    bool insertData_post_dynamic_properties(int _post_id,int _type,int _value);//初始化点赞和收藏数
+    bool insertData_post_dynamic_properties(int _post_id);//初始化点赞和收藏数
 
     //更新数据
     bool updateData_PersonalInformation_Name(QString _account,QString _name);
