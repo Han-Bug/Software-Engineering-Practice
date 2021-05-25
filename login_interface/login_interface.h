@@ -9,6 +9,8 @@
 #include "personal_info_widget/personal_interface.h"
 #include "data_structs.h"
 #include "mainwindow/mainwindow.h"
+
+
 namespace Ui {
 class login_interface;
 }
@@ -18,6 +20,7 @@ class login_interface : public QDialog
     Q_OBJECT
 
 public:
+    static QString id;
     explicit login_interface(database_interaction *_db,QWidget *parent = 0);
 
     personal_information* personalInfo;    //用户信息绑定

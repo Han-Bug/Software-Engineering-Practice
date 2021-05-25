@@ -1,6 +1,8 @@
 #include "login_interface.h"
 #include "ui_login_interface.h"
 
+QString login_interface::id;
+
 login_interface::login_interface(database_interaction *_db,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::login_interface)
@@ -27,6 +29,7 @@ void login_interface::on_pushButton_login_in_clicked()
                  ui->lineEdit_password->text());
     db->selectData(l,3,"personal_information",limitStatement);
     if(l.size()!=0){
+        login_interface::id = (*l.front())[0];
         personalInfo=new personal_information((*l.front())[0],(*l.front())[1],(*l.front())[2]);
         close();
     }

@@ -5,6 +5,7 @@
 #include <QResizeEvent>
 #include <QSize>
 #include "data_structs.h"
+#include "database_interaction/database_interaction.h"
 
 namespace Ui {
 class post_detailed_info;
@@ -18,6 +19,19 @@ public:
     bool updateInfo();
 //    void resizeEvent(QResizeEvent *ev);
     ~post_detailed_info();
+
+private slots:
+    //void on_pushButton_Fabulous_clicked();
+
+    //void on_pushButton_Collect_clicked();
+
+    void on_pushButton_thumb_clicked();
+
+    void on_pushButton_collect_clicked();
+
+    void on_pushButton_Delthumb_clicked();
+
+    void on_pushButton_Delcollect_clicked();
 
 private:
     Ui::post_detailed_info *ui;

@@ -1,5 +1,6 @@
 #include "publish_article_interface.h"
 #include "ui_publish_article_interface.h"
+#include "mainwindow/mainwindow.h"
 
 publish_article_interface::publish_article_interface(database_interaction *_db,QWidget *parent) :
     QWidget(parent),
@@ -29,10 +30,12 @@ void publish_article_interface::on_pushButton_publish_clicked()
     //(无限制)
     //
 
+
     if(!db->insertData_ArticlePost(ui->lineEdit->text(),
                                ui->textEdit->toPlainText(),
                                ui->comboBox_article_type->currentIndex(),
                                db->getDate(),
+                               //db->getNumberOf("article_post"),
                                db->getNumberOf("article_post"),
                                authorName
                                ))
@@ -43,7 +46,12 @@ void publish_article_interface::on_pushButton_publish_clicked()
         return;
     }
     QMessageBox mb;
+    int postId=db->getNumberOf("article_post");
+    db->insertData_post_dynamic_properties(postId,0,0);//初始化点赞数
+    db->insertData_post_dynamic_properties( postId,1,0);//初始化收藏数
     mb.setText("发布成功！");
     mb.exec();
+
+
     this->close();
 }

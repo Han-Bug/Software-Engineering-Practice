@@ -13,7 +13,7 @@
 
 int main(int argc, char *argv[])
 {
-    database_interaction db("127.0.1.1","SE_db_usersInformation","sa","929014757");
+    database_interaction db("127.0.1.1","123","sa","123456");
     qDebug()<<"is database open successfully?"<<db.open_database();
     list<article_post*> l;
     db.getPostInfo(l,0,"202200000000","000000000000",-1);

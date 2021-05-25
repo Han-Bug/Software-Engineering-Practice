@@ -19,6 +19,8 @@
 
 //using namespace  std;
 
+static database_interaction db("127.0.1.1","123","sa","123456");
+
 class login_interface;
 
 namespace Ui {
@@ -52,6 +54,8 @@ private slots:
     void on_pushButton_lostAndFound_clicked(bool checked);
 
     void on_pushButton_expExchange_clicked(bool checked);
+
+    void on_scrollArea_customContextMenuRequested(const QPoint &pos);
 
 private:
     Ui::MainWindow *ui;

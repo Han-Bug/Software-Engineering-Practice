@@ -1,5 +1,6 @@
 #include "post_widget.h"
 
+
 post_widget::post_widget(article_post *_ap,QWidget *parent) : QWidget(parent)
 //post_widget::post_widget(article_post *_ap)
 {
@@ -76,6 +77,7 @@ void post_widget::mouseReleaseEvent(QMouseEvent *e){
     if(ap==NULL)return ;
     if(e->button())this->setStyleSheet("background-color:rgb(240,248,255)");
     //pdi->setAttribute(Qt::WA_DeleteOnClose);
+    pdi->updateInfo();
     pdi->show();
 
 }
