@@ -31,7 +31,7 @@ void publish_article_interface::on_pushButton_publish_clicked()
     //
 
 
-    if(!db->insertData_ArticlePost(ui->lineEdit->text(),
+    if(db->insertData_ArticlePost(ui->lineEdit->text(),
                                ui->textEdit->toPlainText(),
                                ui->comboBox_article_type->currentIndex(),
                                db->getDate(),
@@ -39,6 +39,8 @@ void publish_article_interface::on_pushButton_publish_clicked()
                                db->getNumberOf("article_post"),
                                authorName
                                ))
+        db->insertData_post_dynamic_properties(db->getNumberOf("article_post")-1);//初始化赞收藏数
+    else
     {
         QMessageBox errorMessageBox;
         errorMessageBox.setText("发布失败！");
@@ -46,9 +48,6 @@ void publish_article_interface::on_pushButton_publish_clicked()
         return;
     }
     QMessageBox mb;
-    int postId=db->getNumberOf("article_post");
-    db->insertData_post_dynamic_properties(postId,0,0);//初始化点赞数
-    db->insertData_post_dynamic_properties( postId,1,0);//初始化收藏数
     mb.setText("发布成功！");
     mb.exec();
 

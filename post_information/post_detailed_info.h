@@ -19,6 +19,7 @@ public:
     bool updateInfo();
 //    void resizeEvent(QResizeEvent *ev);
     ~post_detailed_info();
+    void paintEvent(QPaintEvent *event);
 
 private slots:
     //void on_pushButton_Fabulous_clicked();

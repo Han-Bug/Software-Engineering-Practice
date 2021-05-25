@@ -1,6 +1,7 @@
 #include "post_detailed_info.h"
 #include "ui_post_detailed_info.h"
 #include "login_interface/login_interface.h"
+#include<QPainter>
 
 post_detailed_info::post_detailed_info(article_post *_ap,QWidget *parent) :
     QWidget(parent),
@@ -59,11 +60,20 @@ post_detailed_info::~post_detailed_info()
     delete ui;
 }
 
+void post_detailed_info::paintEvent(QPaintEvent *event){
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    int a,b;
+    db.selectCount(a,b,ap->postId);
+    painter.drawText(670,60,"+"+QString::number(a));
+    painter.drawText(780,60,"+"+QString::number(b));
+}
+
 void post_detailed_info::on_pushButton_thumb_clicked()//点赞
 {
     ui->pushButton_thumb->hide();
     ui->pushButton_Delthumb->show();
-    db.updateData_post_dynamic_properties_add(ap->postId,0);//点赞数++
+    db.updateData_post_dynamic_properties_add(ap->postId,1);//点赞数++
     db.insertData_Fabulous_UserToPost(ap->postId,login_interface::id);
 }
 
@@ -71,7 +81,7 @@ void post_detailed_info::on_pushButton_collect_clicked()//收藏
 {
     ui->pushButton_collect->hide();
     ui->pushButton_Delcollect->show();
-    db.updateData_post_dynamic_properties_add(ap->postId,1);//收藏数++
+    db.updateData_post_dynamic_properties_add(ap->postId,2);//收藏数++
     db.insertData_Collect_UserToPost(ap->postId,login_interface::id);
 }
 
@@ -80,7 +90,7 @@ void post_detailed_info::on_pushButton_Delthumb_clicked()//取消点赞
 
     ui->pushButton_thumb->show();
     ui->pushButton_Delthumb->hide();
-    db.updateData_post_dynamic_properties_sub(ap->postId,0);//点赞数--
+    db.updateData_post_dynamic_properties_sub(ap->postId,1);//点赞数--
     db.deleteData_Fabulous_UserToPost(ap->postId,login_interface::id);
 }
 
@@ -89,6 +99,6 @@ void post_detailed_info::on_pushButton_Delcollect_clicked()//取消收藏
 
     ui->pushButton_collect->show();
     ui->pushButton_Delcollect->hide();
-    db.updateData_post_dynamic_properties_sub(ap->postId,1);//收藏数--
+    db.updateData_post_dynamic_properties_sub(ap->postId,2);//收藏数--
     db.deleteData_Collect_UserToPost(ap->postId,login_interface::id);
 }
