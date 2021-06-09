@@ -76,7 +76,7 @@ bool database_interaction::getPostInfo(list<article_post *> &l, int type, QStrin
 
 bool database_interaction::getPostInfo_collect(list<article_post*> &l, QString _account){
     QSqlQuery query(db);
-    QString sqlSentence = QString("select * from article_post where postId in (select postId from collect_user_to_post where account = '%1')").arg(_account);
+    QString sqlSentence = QString("select * from article_post where postId in (select post_id from associated_user_to_post where type = 1 and account = '%1')").arg(_account);
     query.exec(sqlSentence);
     int postNum=0;
     while(query.next())
@@ -119,7 +119,7 @@ bool database_interaction::selectData(list<vector<QString>*> &l, int typeNum,QSt
 bool database_interaction::Fabulous_UserToPost(int _postId,QString _account)
 {
     QSqlQuery query(db);
-    QString sqlSentence=QString("select * from fabulous_user_to_post where postId = %1 and account = '%2'").arg(QString::number(_postId),_account);
+    QString sqlSentence=QString("select * from associated_user_to_post where type = 0 and post_id = %1 and account = '%2'").arg(QString::number(_postId),_account);
     query.exec(sqlSentence);
     if(query.numRowsAffected()<=0)return false;
     else return true;
@@ -128,7 +128,7 @@ bool database_interaction::Fabulous_UserToPost(int _postId,QString _account)
 bool database_interaction::Collect_UserToPost(int _postId,QString _account)
 {
     QSqlQuery query(db);
-    QString sqlSentence=QString("select * from collect_user_to_post where postId = %1 and account = '%2'").arg(QString::number(_postId),_account);
+    QString sqlSentence=QString("select * from associated_user_to_post where type = 1 and post_id = %1 and account = '%2'").arg(QString::number(_postId),_account);
     query.exec(sqlSentence);
     if(query.numRowsAffected()<=0)return false;
     else return true;
@@ -136,12 +136,15 @@ bool database_interaction::Collect_UserToPost(int _postId,QString _account)
 
 bool database_interaction::selectCount(int &a, int &b, int _postId){
     QSqlQuery query(db);
-    QString sqlSentence=QString("select fabulous,collect from post_dynamic_properties where postId = '%1'").arg(QString::number(_postId));
+    QString sqlSentence=QString("select value from post_dynamic_properties where type = 0 and post_id = '%1'").arg(QString::number(_postId));
     query.exec(sqlSentence);
-    while(query.next())
-    {
-        a = query.value(0).toInt();
-        b = query.value(1).toInt();
+    while(query.next()){
+        a = query.value(2).toInt();
+    }
+    sqlSentence=QString("select value from post_dynamic_properties where type = 1 and post_id = '%1'").arg(QString::number(_postId));
+    query.exec(sqlSentence);
+    while(query.next()){
+        b = query.value(2).toInt();
     }
 }
 
@@ -165,13 +168,13 @@ bool database_interaction::deleteData_Associated_UserToPost(int _postId,QString 
 
 bool database_interaction::deleteData_Collect_UserToPost(int _postId,QString _account){
     QSqlQuery query(db);
-    QString sqlSentence=QString("delete from collect_user_to_post where postId = %1 and account = '%2'").arg(QString::number(_postId),_account);
+    QString sqlSentence=QString("delete from associated_user_to_post where type = 1 and post_id = %1 and account = '%2'").arg(QString::number(_postId),_account);
     query.exec(sqlSentence);
     return true;
 }
 bool database_interaction::deleteData_Fabulous_UserToPost(int _postId,QString _account){
     QSqlQuery query(db);
-    QString sqlSentence=QString("delete from fabulous_user_to_post where postId = %1 and account = '%2'").arg(QString::number(_postId),_account);
+    QString sqlSentence=QString("delete from associated_user_to_post where type = 0 and post_id = %1 and account = '%2'").arg(QString::number(_postId),_account);
     query.exec(sqlSentence);
     return true;
 }
@@ -217,7 +220,7 @@ bool database_interaction::insertData_Associated_UserToPost(int _postId, QString
 bool database_interaction::insertData_Collect_UserToPost(int _postId,QString _account)
 {
     QSqlQuery query(db);
-    QString sqlSentence=QString("insert into collect_user_to_post values(%1,'%2')").arg(QString::number(_postId),_account);
+    QString sqlSentence=QString("insert into associated_user_to_post values(%1,'%2',1)").arg(QString::number(_postId),_account);
     query.exec(sqlSentence);
     if(query.numRowsAffected()<0)return false;
     return true;
@@ -225,7 +228,7 @@ bool database_interaction::insertData_Collect_UserToPost(int _postId,QString _ac
 bool database_interaction::insertData_Fabulous_UserToPost(int _postId,QString _account)
 {
     QSqlQuery query(db);
-    QString sqlSentence=QString("insert into fabulous_user_to_post values(%1,'%2')").arg(QString::number(_postId),_account);
+    QString sqlSentence=QString("insert into associated_user_to_post values(%1,'%2',0)").arg(QString::number(_postId),_account);
     query.exec(sqlSentence);
     if(query.numRowsAffected()<0)return false;
     return true;
@@ -236,11 +239,10 @@ bool database_interaction::insertData_post_dynamic_properties(int _post_id)//初
 {
     QSqlQuery query(db);
     QString sqlSentence;
-    int n = 0;
-    sqlSentence=QString("insert into post_dynamic_properties values(%1,%2,%3)").arg(QString::number(_post_id),QString::number(n),QString::number(n));
+    sqlSentence=QString("insert into post_dynamic_properties values(%1,0,0)").arg(QString::number(_post_id));
     query.exec(sqlSentence);
-    if(query.numRowsAffected()<0)return false;
-    return true;
+    sqlSentence=QString("insert into post_dynamic_properties values(%1,1,0)").arg(QString::number(_post_id));
+    query.exec(sqlSentence);
 }
 
 bool database_interaction::updateData_PersonalInformation_Name(QString _account,QString _name)
@@ -259,34 +261,33 @@ bool database_interaction::updateData_PersonalInformation_Password(QString _acco
     query.exec(sqlSentence);
     if(query.numRowsAffected()<0)return false;
     return true;
-
 }
 
 // ///
-bool database_interaction::updateData_post_dynamic_properties_add(int _post_id,int _type)//更新点赞收藏数
-{
-    QSqlQuery query(db);
-    QString sqlSentence;
-    if (_type==1)
-        sqlSentence=QString("update post_dynamic_properties set fabulous=fabulous+1 where postId=%1").arg(QString::number(_post_id));
-    else if (_type==2)
-        sqlSentence=QString("update post_dynamic_properties set collect=collect+1 where postId=%1").arg(QString::number(_post_id));
-    query.exec(sqlSentence);
-    if(query.numRowsAffected()<0)return false;
-    return true;
-}
-bool database_interaction::updateData_post_dynamic_properties_sub(int _post_id,int _type)
-{
-    QSqlQuery query(db);
-    QString sqlSentence;
-    if (_type==1)
-        sqlSentence=QString("update post_dynamic_properties set fabulous=fabulous-1 where postId=%1").arg(QString::number(_post_id));
-    else if (_type==2)
-        sqlSentence=QString("update post_dynamic_properties set collect=collect-1 where postId=%1").arg(QString::number(_post_id));
-    query.exec(sqlSentence);
-    if(query.numRowsAffected()<0)return false;
-    return true;
-}
+//bool database_interaction::updateData_post_dynamic_properties_add(int _post_id,int _type)//更新点赞收藏数
+//{
+//    QSqlQuery query(db);
+//    QString sqlSentence;
+//    if (_type==1)
+//        sqlSentence=QString("update post_dynamic_properties set fabulous=fabulous+1 where postId=%1").arg(QString::number(_post_id));
+//    else if (_type==2)
+//        sqlSentence=QString("update post_dynamic_properties set collect=collect+1 where postId=%1").arg(QString::number(_post_id));
+//    query.exec(sqlSentence);
+//    if(query.numRowsAffected()<0)return false;
+//    return true;
+//}
+//bool database_interaction::updateData_post_dynamic_properties_sub(int _post_id,int _type)
+//{
+//    QSqlQuery query(db);
+//    QString sqlSentence;
+//    if (_type==1)
+//        sqlSentence=QString("update post_dynamic_properties set fabulous=fabulous-1 where postId=%1").arg(QString::number(_post_id));
+//    else if (_type==2)
+//        sqlSentence=QString("update post_dynamic_properties set collect=collect-1 where postId=%1").arg(QString::number(_post_id));
+//    query.exec(sqlSentence);
+//    if(query.numRowsAffected()<0)return false;
+//    return true;
+//}
 
 QString database_interaction::getDate()
 {

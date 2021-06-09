@@ -35,7 +35,7 @@ void personal_interface::setPersonalInfo(personal_information *pi)
 void personal_interface::on_pushButton_Favorites_clicked()
 {
     list<article_post*> result;
-    se->search2(result,login_interface::id);
+    se->search2(result,Data::personalInfo->name);
     associated_interface* ai=new associated_interface(result);
     ai->setAttribute(Qt::WA_DeleteOnClose);
     ai->show();
