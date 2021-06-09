@@ -13,7 +13,7 @@
 
 int main(int argc, char *argv[])
 {
-    database_interaction db("127.0.1.1","SE_db_usersInformation","sa","929014757");
+    database_interaction db("127.0.0.1","SE_db_usersInformation","sa","929014757");
     qDebug()<<"is database open successfully?"<<db.open_database();
     Data::dataBaseInter=&db;
     QApplication a(argc, argv);
