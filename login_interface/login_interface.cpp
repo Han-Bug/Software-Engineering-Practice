@@ -22,7 +22,7 @@ void login_interface::on_pushButton_login_in_clicked()
 {
     //获取输入的帐号密码等信息
     list<vector<QString>*> l;
-    QString limitStatement=QString("where account = %1 and password = %2")
+    QString limitStatement=QString("where account = '%1' and password = '%2'")
             .arg(ui->lineEdit_account->text(),
                  ui->lineEdit_password->text());
     db->selectData(l,3,"personal_information",limitStatement);
