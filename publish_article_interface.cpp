@@ -1,12 +1,13 @@
 #include "publish_article_interface.h"
 #include "ui_publish_article_interface.h"
 
-publish_article_interface::publish_article_interface(database_interaction *_db,QWidget *parent) :
+publish_article_interface::publish_article_interface(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::publish_article_interface)
 {
     ui->setupUi(this);
-    db=_db;
+    db=Data::dataBaseInter;
+
     ui->lineEdit->setPlaceholderText("请在此输入标题");
     ui->textEdit->setPlaceholderText("请在此输入正文");
 

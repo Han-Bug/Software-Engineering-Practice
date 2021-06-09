@@ -1,12 +1,12 @@
 #include "register_interface.h"
 #include "ui_register_interface.h"
 
-register_interface::register_interface(database_interaction *_db,QWidget *parent) :
+register_interface::register_interface(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::register_interface)
 {
     ui->setupUi(this);
-    db=_db;
+    db=Data::dataBaseInter;
     ui->label_prompt_message->setStyleSheet("color: red");
     cleanDataOfLine();
 }

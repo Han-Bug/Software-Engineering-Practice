@@ -14,7 +14,7 @@ class register_interface : public QDialog
     Q_OBJECT
 
 public:
-    explicit register_interface(database_interaction *_db,QWidget *parent = 0);
+    explicit register_interface(QWidget *parent = 0);
     void cleanDataOfLine();
     int legalityReview(QString _account,QString _password,QString _passwordConfirm,QString name);
     ~register_interface();

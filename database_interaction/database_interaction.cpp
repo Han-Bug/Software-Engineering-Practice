@@ -1,5 +1,6 @@
 #include "database_interaction.h"
-#define GET_ACCOUNT_BY_SQL "select "
+personal_information* Data::personalInfo=NULL;
+database_interaction* Data::dataBaseInter=NULL;
 database_interaction::database_interaction(QString _host,QString _dataBaseName,QString _userName,QString _password)
 {
     host=_host;

@@ -14,7 +14,7 @@ class publish_article_interface : public QWidget
     Q_OBJECT
 
 public:
-    explicit publish_article_interface(database_interaction *_db,QWidget *parent = 0);
+    explicit publish_article_interface(QWidget *parent = 0);
     ~publish_article_interface();
     void setAuthor(QString _authorAccount,QString _authorName);
 private slots:

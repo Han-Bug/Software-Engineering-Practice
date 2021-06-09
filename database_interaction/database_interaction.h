@@ -53,5 +53,9 @@ private:
     QSqlDatabase db;
     bool isConnect=false;
 };
+struct Data{
+    static personal_information* personalInfo;
+    static database_interaction* dataBaseInter;
+};
 
 #endif // DATABASE_INTERACTION_H
