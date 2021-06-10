@@ -7,6 +7,8 @@ personal_interface::personal_interface(QWidget *parent) :
     ui->setupUi(this);
     db=Data::dataBaseInter;
     updateUser();
+    se = new Search(db);
+    updateUser();
 }
 
 void personal_interface::updateUser(){
@@ -21,7 +23,14 @@ personal_interface::~personal_interface()
 {
     delete ui;
 }
-
+void personal_interface::on_pushButton_Favorites_clicked()
+{
+    list<article_post*> result;
+    se->search2(result,Data::personalInfo->account);
+    associated_interface* ai=new associated_interface(result);
+    ai->setAttribute(Qt::WA_DeleteOnClose);
+    ai->show();
+}
 //void personal_interface::setPersonalInfo(personal_information *pi)
 //{
 //    personalInfo=pi;

@@ -13,17 +13,20 @@
 
 int main(int argc, char *argv[])
 {
-    database_interaction db("127.0.0.1","SE_db_usersInformation","sa","929014757");
+    database_interaction db("127.0.0.1","SE_project_2105","sa","929014757");
     qDebug()<<"is database open successfully?"<<db.open_database();
     Data::dataBaseInter=&db;
     QApplication a(argc, argv);
-    if(Data::dataBaseInter==NULL){
+    if(!Data::dataBaseInter->isConnected()){
         QMessageBox errorMessageBox;
         errorMessageBox.setText("数据库连接失败！请检查数据源相关配置");
         errorMessageBox.exec();
         a.quit();
+        return -1;
     }
-    MainWindow m;
-    m.show();
+
+        MainWindow m;
+        m.show();
+
     return a.exec();
 }

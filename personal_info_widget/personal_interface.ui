@@ -63,6 +63,13 @@
       </layout>
      </widget>
     </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_Favorites">
+      <property name="text">
+       <string>收藏夹</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
  </widget>

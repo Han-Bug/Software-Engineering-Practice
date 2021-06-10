@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
     layout_post->setSpacing(10);
     ui->scrollAreaWidgetContents->setMaximumWidth(ui->scrollArea->width());
     updatePost();
-
 }
 
 void MainWindow::setUser()
@@ -38,7 +37,7 @@ void MainWindow::updatePost()
     for(int i=0;i<5;i++){
         if(types[i])db->getPostInfo(l,i,"000000000000","900000000000",-1);
     }
-    l.sort(compareArticalPostByTime);
+    l.sort(comparePostsByTime);
     while(l.size()!=0){
         article_post* ap=l.front();
         post_widget* pw=new post_widget(ap);
@@ -66,6 +65,7 @@ void MainWindow::on_user_clicked()
         login_interface *li=new login_interface();
         li->exec();
         setUser();
+        updatePost();
         pi->updateUser();
         //pi->setPersonalInfo(personalInfo);
     }
@@ -78,7 +78,7 @@ void MainWindow::on_pushButton_publish_clicked()
         login_interface *li=new login_interface();
         li->exec();
         setUser();
-        //pi->setPersonalInfo(personalInfo);
+        updatePost();
     }
     else{
         publish_article_interface *pai=new publish_article_interface();

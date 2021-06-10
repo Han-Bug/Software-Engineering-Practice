@@ -75,6 +75,34 @@ bool database_interaction::getPostInfo(list<article_post *> &l, int type, QStrin
    return true;
 }
 
+bool database_interaction::getComments(list<comment *> &l,int post_id, QString start_time, QString end_time, int num)
+{
+    if(start_time.toLongLong()<end_time.toLongLong()){
+        return getComments(l,post_id,end_time,start_time,num);
+    }
+    QSqlQuery query(db);
+    QString sqlSentence;
+    sqlSentence =QString ("select * from comment where post_id=%1 and time<='%2' and time>='%3' ").arg(QString::number(post_id),start_time,end_time);
+    query.exec(sqlSentence);
+    int commentNum=0;
+    while(query.next())
+       {
+        if(commentNum>=num&&num>=0)break;
+        comment* cm=new comment(
+                    query.value(0).toString(),
+                    query.value(1).toString(),
+                    query.value(2).toString(),
+                    query.value(3).toInt(),
+                    query.value(4).toInt(),
+                    query.value(4).toString()
+                    );
+        l.push_back(cm);
+        ++commentNum;
+      }
+   if(commentNum==0)return false;
+   return true;
+}
+
 bool database_interaction::selectData(list<vector<QString>*> &l, int typeNum,QString sourse, QString limitStatement)
 {
     QSqlQuery query(db);
@@ -123,6 +151,24 @@ bool database_interaction::insertData_ArticlePost(QString _title, QString _text,
     return true;
 
 }
+//
+//
+//
+bool database_interaction::insertData_Comment(QString _text,QString _author_name,QString _author_id,int _commentId,int _postId,QString _time)
+{
+    QSqlQuery query(db);
+    QString sqlSentence=QString("insert into comment values('%1','%2','%3',%4,%5,'%6')")
+            .arg(_text,_author_name,_author_id,QString::number(_commentId),QString::number(_postId),_time);
+    query.exec(sqlSentence);
+    if(query.numRowsAffected()<0)return false;
+    return true;
+}
+//
+//
+//
+//
+
+
 
 bool database_interaction::insertData_Associated_TagToPost(QString _postId, QString _tag)
 {
@@ -161,6 +207,94 @@ bool database_interaction::updateData_PersonalInformation_Password(QString _acco
 
 }
 
+bool database_interaction::getPostInfo_collect(list<article_post*> &l, QString _account){
+    QSqlQuery query(db);
+    QString sqlSentence = QString("select * from article_post where postId in (select postId from associated_user_to_post where type = 1 and account = '%1')").arg(_account);
+    query.exec(sqlSentence);
+    int postNum=0;
+    while(query.next())
+    {
+        article_post* ap=new article_post(
+                    query.value(0).toString() ,
+                    query.value(1).toString() ,
+                    query.value(2).toInt(),
+                    query.value(3).toString(),
+                    query.value(4).toInt(),
+                    query.value(5).toString()
+                    );
+        l.push_back(ap);
+        postNum++;
+    }
+    if(postNum==0)return false;
+    return true;
+}
+
+bool database_interaction::Fabulous_UserToPost(int _postId,QString _account)
+{
+    QSqlQuery query(db);
+    QString sqlSentence=QString("select * from associated_user_to_post where type = 0 and postId = %1 and account = '%2'").arg(QString::number(_postId),_account);
+    query.exec(sqlSentence);
+    if(query.numRowsAffected()<=0)return false;
+    else return true;
+}
+
+bool database_interaction::Collect_UserToPost(int _postId,QString _account)
+{
+    QSqlQuery query(db);
+    QString sqlSentence=QString("select * from associated_user_to_post where type = 1 and postId = %1 and account = '%2'").arg(QString::number(_postId),_account);
+    query.exec(sqlSentence);
+    if(query.numRowsAffected()<=0)return false;
+    else return true;
+}
+
+bool database_interaction::selectCount(int &a, int &b, int _postId){
+    QSqlQuery query(db);
+    QString sqlSentence=QString("select value from post_dynamic_properties where type = 0 and post_id = '%1'").arg(QString::number(_postId));
+    query.exec(sqlSentence);
+    while(query.next()){
+        a = query.value(2).toInt();
+    }
+    sqlSentence=QString("select value from post_dynamic_properties where type = 1 and post_id = '%1'").arg(QString::number(_postId));
+    query.exec(sqlSentence);
+    while(query.next()){
+        b = query.value(2).toInt();
+    }
+}
+
+bool database_interaction::deleteData_Collect_UserToPost(int _postId,QString _account){
+    QSqlQuery query(db);
+    QString sqlSentence=QString("delete from associated_user_to_post where type = 1 and postId = %1 and account = '%2'").arg(QString::number(_postId),_account);
+    qDebug()<<"sql:"<<sqlSentence;
+    query.exec(sqlSentence);
+    return true;
+}
+
+bool database_interaction::deleteData_Fabulous_UserToPost(int _postId,QString _account){
+    QSqlQuery query(db);
+    QString sqlSentence=QString("delete from associated_user_to_post where type = 0 and postId = %1 and account = '%2'").arg(QString::number(_postId),_account);
+    query.exec(sqlSentence);
+    return true;
+}
+
+bool database_interaction::insertData_Collect_UserToPost(int _postId,QString _account)
+{
+    QSqlQuery query(db);
+    QString sqlSentence=QString("insert into associated_user_to_post values(%1,'%2',%3)").arg(QString::number(_postId),_account,"1");
+    //qDebug()<<"sqlSentence:"<<sqlSentence;
+    query.exec(sqlSentence);
+    if(query.numRowsAffected()<0)return false;
+    return true;
+}
+
+bool database_interaction::insertData_Fabulous_UserToPost(int _postId,QString _account)
+{
+    QSqlQuery query(db);
+    QString sqlSentence=QString("insert into associated_user_to_post values(%1,'%2',0)").arg(QString::number(_postId),_account);
+    query.exec(sqlSentence);
+    if(query.numRowsAffected()<0)return false;
+    return true;
+}
+
 QString database_interaction::getDate()
 {
     QString date;
@@ -174,6 +308,11 @@ QString database_interaction::getDate()
     time.replace(":","");
     date.append(time);
     return date;
+}
+
+bool database_interaction::isConnected()
+{
+    return isConnect;
 }
 
 int database_interaction::getNumberOf(QString source)

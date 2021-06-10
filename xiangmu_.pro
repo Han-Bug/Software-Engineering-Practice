@@ -26,6 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    comment_widget.cpp \
     database_interaction/database_interaction.cpp \
     login_interface/login_interface.cpp \
     login_interface/register_interface.cpp \
@@ -36,9 +37,11 @@ SOURCES += \
     main.cpp \
     validity_test.cpp \
     publish_article_interface.cpp \
-    associated_interface.cpp
+    associated_interface.cpp \
+    comments_widget.cpp
 
 HEADERS += \
+    comment_widget.h \
     database_interaction/database_interaction.h \
     login_interface/login_interface.h \
     login_interface/register_interface.h \
@@ -50,16 +53,19 @@ HEADERS += \
     validity_test.h \
     publish_article_interface.h \
     associated_interface.h \
-    Search.h
+    Search.h \
+    comments_widget.h
 
 SUBDIRS += \
     xiangmu_.pro
 
 FORMS += \
+    comment_widget.ui \
     login_interface/login_interface.ui \
     login_interface/register_interface.ui \
     mainwindow/mainwindow.ui \
     personal_info_widget/personal_interface.ui \
     post_information/post_detailed_info.ui \
     publish_article_interface.ui \
-    associated_interface.ui
+    associated_interface.ui \
+    comments_widget.ui
