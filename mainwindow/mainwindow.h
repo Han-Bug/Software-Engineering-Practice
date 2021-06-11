@@ -30,9 +30,9 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(database_interaction *db,QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = 0);
     //设置个人信息
-    void setPersonalInfo(personal_information* pi);
+    void setUser();
     //更新广场
     void updatePost();
 
@@ -69,7 +69,7 @@ private:
     //数据库交互模块
     database_interaction *db;
     //个人信息
-    personal_information *personalInfo=NULL;
+    //personal_information *personalInfo=NULL;
 
     Search *se;
 

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>个人信息</string>
   </property>
   <widget class="QWidget" name="personal_information_available" native="true">
    <property name="geometry">
@@ -61,6 +61,13 @@
         </widget>
        </item>
       </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_Favorites">
+      <property name="text">
+       <string>收藏夹</string>
+      </property>
      </widget>
     </item>
    </layout>

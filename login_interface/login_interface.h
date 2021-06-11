@@ -18,9 +18,9 @@ class login_interface : public QDialog
     Q_OBJECT
 
 public:
-    explicit login_interface(database_interaction *_db,QWidget *parent = 0);
+    explicit login_interface(QWidget *parent = 0);
 
-    personal_information* personalInfo;    //用户信息绑定
+    //personal_information* personalInfo;    //用户信息绑定
 
     ~login_interface();
 

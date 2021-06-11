@@ -1,28 +1,26 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-MainWindow::MainWindow(database_interaction *_db,QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    this->db=_db;
+    db=Data::dataBaseInter;
     se=new Search(db);
     types=new bool[5];
     for(int i=0;i<5;i++)types[i]=true;
     ui->setupUi(this);
     //初始化子窗口
-    pi=new personal_interface(db);
+    pi=new personal_interface();
     layout_post=new QVBoxLayout(ui->scrollAreaWidgetContents);
     layout_post->setSpacing(10);
     ui->scrollAreaWidgetContents->setMaximumWidth(ui->scrollArea->width());
     updatePost();
-
 }
 
-void MainWindow::setPersonalInfo(personal_information *pi)
+void MainWindow::setUser()
 {
-    personalInfo=pi;
-    if(personalInfo==NULL)ui->user->setText("点击登录");
-    else ui->user->setText(personalInfo->name);
+    if(Data::personalInfo==NULL)ui->user->setText("点击登录");
+    else ui->user->setText(Data::personalInfo->name);
 }
 
 void MainWindow::updatePost()
@@ -39,7 +37,7 @@ void MainWindow::updatePost()
     for(int i=0;i<5;i++){
         if(types[i])db->getPostInfo(l,i,"000000000000","900000000000",-1);
     }
-    l.sort(compareArticalPostByTime);
+    l.sort(comparePostsByTime);
     while(l.size()!=0){
         article_post* ap=l.front();
         post_widget* pw=new post_widget(ap);
@@ -63,26 +61,28 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_user_clicked()
 {
-    if(personalInfo==NULL){
-        login_interface *li=new login_interface(db);
+    if(Data::personalInfo==NULL){
+        login_interface *li=new login_interface();
         li->exec();
-        setPersonalInfo(li->personalInfo);
-        pi->setPersonalInfo(personalInfo);
+        setUser();
+        updatePost();
+        pi->updateUser();
+        //pi->setPersonalInfo(personalInfo);
     }
     else pi->show();
 }
 
 void MainWindow::on_pushButton_publish_clicked()
 {
-    if(personalInfo==NULL){
-        login_interface *li=new login_interface(db);
+    if(Data::personalInfo==NULL){
+        login_interface *li=new login_interface();
         li->exec();
-        setPersonalInfo(li->personalInfo);
-        pi->setPersonalInfo(personalInfo);
+        setUser();
+        updatePost();
     }
     else{
-        publish_article_interface *pai=new publish_article_interface(db);
-        pai->setAuthor(personalInfo->account,personalInfo->name);
+        publish_article_interface *pai=new publish_article_interface();
+        pai->setAuthor(Data::personalInfo->account,Data::personalInfo->name);
         pai->show();
     }
 }

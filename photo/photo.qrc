@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>blackheart.png</file>
+        <file>blackstar.png</file>
+        <file>yellowstar.png</file>
+        <file>redheart.png</file>
+        <file>white.png</file>
+    </qresource>
+</RCC>

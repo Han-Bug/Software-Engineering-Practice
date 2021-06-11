@@ -50,8 +50,37 @@ struct associated_tag_to_post
         tag=_tag;
     }
 };
+struct comment
+{
+    QString text;
+    QString author_name;
+    QString author_id;
+    int comment_id;
+    int post_id;
+    QString time;
+    comment(QString _text,QString _author_name ,QString _author_id ,int _comment_id,int _post_id ,QString _time){
+        text=_text;
+        author_name=_author_name;
+        author_id=_author_id;
+        comment_id=_comment_id;
+        post_id=_post_id;
+        time=_time;
+    }
+};
+struct article_postData{
+    int thumbNum;
+    int collectNum;
+    article_postData(int thumbNum,int collectNum){
+        this->thumbNum=thumbNum;
+        this->collectNum=collectNum;
+    }
+};
+
 //降序
-static bool compareArticalPostByTime(article_post* a,article_post* b){
+static bool comparePostsByTime(article_post* a,article_post* b){
+    return a->time.toLongLong()>b->time.toLongLong();
+}
+static bool compareCommentsByTime(comment* a,comment* b){
     return a->time.toLongLong()>b->time.toLongLong();
 }
 

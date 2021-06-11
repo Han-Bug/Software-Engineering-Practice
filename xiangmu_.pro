@@ -26,6 +26,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    comment/comment_widget.cpp \
+    comment/comments_widget.cpp \
     database_interaction/database_interaction.cpp \
     login_interface/login_interface.cpp \
     login_interface/register_interface.cpp \
@@ -33,12 +35,14 @@ SOURCES += \
     personal_info_widget/personal_interface.cpp \
     post_information/post_detailed_info.cpp \
     post_information/post_widget.cpp \
+    associated_interface.cpp \
     main.cpp \
-    validity_test.cpp \
     publish_article_interface.cpp \
-    associated_interface.cpp
+    validity_test.cpp
 
 HEADERS += \
+    comment/comment_widget.h \
+    comment/comments_widget.h \
     database_interaction/database_interaction.h \
     login_interface/login_interface.h \
     login_interface/register_interface.h \
@@ -46,20 +50,37 @@ HEADERS += \
     personal_info_widget/personal_interface.h \
     post_information/post_detailed_info.h \
     post_information/post_widget.h \
-    data_structs.h \
-    validity_test.h \
-    publish_article_interface.h \
     associated_interface.h \
-    Search.h
+    data_structs.h \
+    publish_article_interface.h \
+    Search.h \
+    validity_test.h
 
 SUBDIRS += \
     xiangmu_.pro
 
 FORMS += \
+    comment/comment_widget.ui \
+    comment/comments_widget.ui \
     login_interface/login_interface.ui \
     login_interface/register_interface.ui \
     mainwindow/mainwindow.ui \
     personal_info_widget/personal_interface.ui \
     post_information/post_detailed_info.ui \
-    publish_article_interface.ui \
-    associated_interface.ui
+    post_information/post_widget.ui \
+    associated_interface.ui \
+    publish_article_interface.ui
+
+
+RESOURCES += \
+    photo/photo.qrc
+
+DISTFILES += \
+    photo/beijing.png \
+    photo/blackheart.png \
+    photo/blackstar.png \
+    photo/gray.png \
+    photo/redheart.png \
+    photo/white.png \
+    photo/whitebeijing.png \
+    photo/yellowstar.png

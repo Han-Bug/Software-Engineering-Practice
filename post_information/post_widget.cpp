@@ -1,19 +1,20 @@
 #include "post_widget.h"
+#include "ui_post_widget.h"
 
-post_widget::post_widget(article_post *_ap,QWidget *parent) : QWidget(parent)
-//post_widget::post_widget(article_post *_ap)
+post_widget::post_widget(article_post *ap,QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::post_widget)
 {
-    //绑定文章信息结构体
-    ap=_ap;
-    setMinimumSize(1010,70);
-    setMaximumSize(1010,70);
+    ui->setupUi(this);
 
-    //根据绑定的文章更新信息
-    updateInfo();
+    this->ap=ap;
 
-    label_author->setGeometry(20,10,60,30);
-    label_text->setGeometry(120,10,900,20);
-    label_time->setGeometry(860,40,81,16);
+    QFont font( "Microsoft YaHei",10,75); //第一个属性是字体（微软雅黑），第二个是大小，第三个是加粗（权重是75）  字体样式设计
+    ui->label_author->setFont(font);
+    ui->label_time->setStyleSheet ("QLabel { color: green; text-decoration: underline; }");//绿色加下划线
+    ui->label_thumbNum->setStyleSheet ("QLabel { color: gray; text-decoration: underline; }");//灰色加下划线
+    ui->label_collectNum->setStyleSheet ("QLabel { color: gray; text-decoration: underline; }");//灰色加下划线
+    ui->label_title->setStyleSheet("QLabel{background-color:rgb(251,251,251);}");  //设置样式表
 
     //脱离父窗口样式
     this->setAttribute(Qt::WA_StyledBackground,true);
@@ -21,17 +22,32 @@ post_widget::post_widget(article_post *_ap,QWidget *parent) : QWidget(parent)
     this->setStyleSheet("background-color:rgb(255,255,255)");
     setAutoFillBackground(true);
     //setMouseTracking(true);
+    apd=Data::dataBaseInter->getPostInfo_PDPData(ap->postId);
+    pdi=new post_detailed_info(ap,apd,parent);
 
-    pdi=new post_detailed_info(ap,parent);
+    updateInfo();
+}
+
+post_widget::~post_widget()
+{
+    delete ui;
 }
 bool post_widget::updateInfo()
 {
     if(ap==NULL)return false;
 
     //根据绑定的文章显示信息
-    label_author->setText(ap->author_name.mid(0,5));
-    label_text->setText(ap->title.mid(0,50));
-
+    QString typeName;
+    if(ap->type==0)typeName="日常分享";
+    else if(ap->type==1)typeName="悬赏接单";
+    else if(ap->type==2)typeName="失物招领";
+    else if(ap->type==3)typeName="经验交流";
+    else if(ap->type==4)typeName="二手市场";
+    ui->label_type->setText(typeName);
+    ui->label_author->setText(ap->author_name.mid(0,5));
+    ui->label_title->setText(ap->title.mid(0,50));
+    ui->label_thumbNum->setText("点赞数："+QString::number(apd->thumbNum));
+    ui->label_collectNum->setText("收藏数："+QString::number(apd->collectNum));
     //日期规范化显示：
     QString t_year="    ";
     QString t_month="  ";
@@ -56,7 +72,7 @@ bool post_widget::updateInfo()
     t.append(".");
     t.append(t_day);
 
-    label_time->setText(t);
+    ui->label_time->setText(t);
     return true;
 }
 void post_widget::enterEvent(QEvent *){
@@ -79,5 +95,4 @@ void post_widget::mouseReleaseEvent(QMouseEvent *e){
     pdi->show();
 
 }
-
 

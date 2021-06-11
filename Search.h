@@ -53,6 +53,14 @@ public:
             }
         }
     }
+    inline void search2(list<article_post*>&result, QString _account){
+        l.clear();
+        result.clear();
+        db->getCollectedPost(l, _account);
+        for(auto it=l.begin();it!=l.end();it++){
+            result.push_back(*it);
+        }
+    }
 private:
     const char* const DICT_PATH = "./dict/jieba.dict.utf8";
     const char* const HMM_PATH = "./dict/hmm_model.utf8";
